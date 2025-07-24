@@ -1,59 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMHHS Survey Site</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 <body>
-  <div id="login-section">
-    <h2>Restricted Access</h2>
-    <p>Please log in with your Google account.</p>
+  <!-- 🔐 Login Section -->
+  <div id="login-section" style="display: none; text-align: center; padding: 2em;">
+    <h2>Restricted Area</h2>
+    <p>You must log in using your Google account to continue.</p>
     <button onclick="signIn()">Login with Google</button>
   </div>
 
-  <div id="main-content" style="display:none;">
-    <!-- 🔐 Protected content starts -->
-    <h2>Welcome to BMHHS Survey Site</h2>
-    <p><a href="edit/index.html">Go to Editor</a></p>
-    <button onclick="signOut()">Logout</button>
-    <!-- 🔐 Protected content ends -->
+  <!-- ✅ Main Content (Only visible after login) -->
+  <div id="main-content" style="display: none;">
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 1em;">
+      <h1>BMHHS Survey Dashboard</h1>
+      <button onclick="signOut()">Logout</button>
+    </header>
+
+    <main style="padding: 1em;">
+      <p>Welcome! You are successfully logged in.</p>
+      <!-- Add navigation or content here -->
+    </main>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- 🔧 Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
 
+  <!-- 🔄 Reusable Auth Logic (in root folder) -->
+  <script src="auth.js"></script>
   <script>
-    // Replace these with YOUR Firebase config
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    function signIn() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider);
-    }
-
-    function signOut() {
-      auth.signOut();
-    }
-
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        // ✅ Optional whitelist (edit as needed)
-        const allowed = ["youremail@gmail.com"];
-        if (!allowed.includes(user.email)) {
-          alert("Access denied for " + user.email);
-          signOut();
-          return;
-        }
-
-        document.getElementById("main-content").style.display = "block";
-        document.getElementById("login-section").style.display = "none";
-      } else {
-        document.getElementById("main-content").style.display = "none";
-        document.getElementById("login-section").style.display = "block";
-      }
-    });
+    // Optional: you can pass a whitelist of allowed email addresses
+    protectPage([
+      // "your.email@gmail.com"
+    ]);
   </script>
 </body>
+</html>
