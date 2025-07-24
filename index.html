@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Survey Consent Form</title>
+</head>
+<body>
+  <div style="font-family: sans-serif; line-height: 1.6; max-width: 700px; margin: auto;">
+    <h2>Survey Consent Form / জরিপে অংশগ্রহণের সম্মতিপত্র</h2>
+    <p><strong>English:</strong> By checking the box below, you agree to voluntarily participate in this survey.
+    Your personal data will be collected, stored, and used solely for research and community development purposes,
+    in accordance with the Digital Personal Data Protection Act, 2023. You may withdraw at any time.</p>
+    <p><strong>বাংলা:</strong> নিচের বক্সে টিক চিহ্ন দিয়ে, আপনি এই জরিপে স্বেচ্ছায় অংশগ্রহণে সম্মতি দিচ্ছেন। আপনার ব্যক্তিগত তথ্য
+    শুধুমাত্র গবেষণা ও সম্প্রদায় উন্নয়নের উদ্দেশ্যে সংগ্রহ, সংরক্ষণ ও ব্যবহার করা হবে, ২০২৩ সালের ডিজিটাল পার্সোনাল ডেটা
+    প্রোটেকশন আইনের অধীনে। আপনি যেকোনো সময় অংশগ্রহণ প্রত্যাহার করতে পারেন।</p>
+    <label>
+      <input type="checkbox" id="consentBox" />
+      <strong>I agree / আমি সম্মত</strong>
+    </label>
+    <br><br>
+    <a href="survey.html" id="proceedLink" style="pointer-events: none; text-decoration: none;">
+      <button disabled id="proceedBtn">Proceed to Survey / জরিপে যান</button>
+    </a>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const checkbox = document.getElementById("consentBox");
+      const proceedBtn = document.getElementById("proceedBtn");
+      const proceedLink = document.getElementById("proceedLink");
+
+      checkbox.addEventListener("change", () => {
+        const enabled = checkbox.checked;
+        proceedBtn.disabled = !enabled;
+        proceedLink.style.pointerEvents = enabled ? "auto" : "none";
+
+        if (enabled) {
+          localStorage.setItem("surveyConsentGiven", "true");
+        } else {
+          localStorage.removeItem("surveyConsentGiven");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
