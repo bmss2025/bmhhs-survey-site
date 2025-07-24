@@ -44,3 +44,40 @@ function protectPage(whitelist = []) {
   });
 }
 
+<script>
+  function showConsentAndPolicy() {
+    const block = document.getElementById("consentPolicyBlock");
+    if (!block) return;
+    block.style.display = "block";
+
+    const checkbox = document.getElementById("consentBox");
+    const proceedBtn = document.getElementById("proceedBtn");
+    const proceedLink = document.getElementById("proceedLink");
+
+    checkbox.addEventListener("change", () => {
+      const enabled = checkbox.checked;
+      proceedBtn.disabled = !enabled;
+      proceedLink.style.pointerEvents = enabled ? "auto" : "none";
+
+      if (enabled) {
+        localStorage.setItem("surveyConsentGiven", "true");
+      } else {
+        localStorage.removeItem("surveyConsentGiven");
+      }
+    });
+
+    if (localStorage.getItem("surveyConsentGiven") === "true") {
+      checkbox.checked = true;
+      proceedBtn.disabled = false;
+      proceedLink.style.pointerEvents = "auto";
+    }
+  }
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      showConsentAndPolicy();
+    }
+  });
+</script>
+
+
