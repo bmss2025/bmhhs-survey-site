@@ -20,25 +20,32 @@ button {
 }
 
 .button-container {
-  margin-top: 20px;
+  margin-top: 30px;
   display: flex;
-  gap: 15px;
   justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap; /* responsive on small screens */
 }
 
 .form-button {
   display: inline-block;
-  padding: 10px 20px;
-  background-color: #2e7d32;
-  color: white;
+  padding: 12px 24px;
+  background-color: #00796b;
+  color: #ffffff;
   text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  border: 2px solid #004d40;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
 
 .form-button:hover {
-  background-color: #1b5e20;
+  background-color: #004d40;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
 }
 
 
