@@ -11,7 +11,12 @@ const auth = firebase.auth();
 
 function signIn() {
   const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider);
+  provider.setCustomParameters({
+    prompt: 'select_account'  // 👈 forces account chooser
+  });
+
+  auth.signInWithPopup(provider)
+    .catch(error => console.error("Sign-in error:", error));
 }
 
 function signOut() {
