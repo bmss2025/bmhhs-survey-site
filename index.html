@@ -2,31 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bishnupriya Manipuri Household Survey</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BMHHS Survey Site</title>
 </head>
 <body>
-  <h1>Bishnupriya Manipuri Household Survey Portal</h1>
-
-  <!-- Welcome Message -->
-  <div id="authStatus">Checking authentication...</div>
-
-  <!-- Buttons for Auth -->
-  <button id="signInBtn" class="hidden">Sign in with Google</button>
-  <button id="signOutBtn" class="hidden">Sign out</button>
-
-  <!-- Main Content -->
-  <div id="content" style="display: none;">
-    <p>Welcome! You are successfully logged in.</p>
-    <a href="survey.html"><button>Proceed to Survey</button></a>
+  <!-- Login Section (Shown if NOT logged in) -->
+  <div id="login-section" style="display: none; text-align: center; padding-top: 100px;">
+    <h2>Please sign in with your Google account</h2>
+    <button onclick="signIn()">Sign in with Google</button>
   </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <!-- Main Content Section (Shown only AFTER login) -->
+  <div id="main-content" style="display: none; text-align: center; padding-top: 100px;">
+    <h2>Welcome! You are successfully logged in.</h2>
+    <button onclick="signOut()">Sign out</button>
+  </div>
 
-  <!-- External Auth Script -->
+  <!-- Firebase & Auth Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth-compat.js"></script>
   <script src="auth.js"></script>
+
+  <!-- Start Auth Guard -->
+  <script>
+    protectPage();
+  </script>
 </body>
 </html>
