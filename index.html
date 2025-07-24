@@ -8,18 +8,16 @@
 </head>
 <body>
   <!-- 🔐 Login Section -->
-  <div id="login-section" style="display: none; text-align: center; padding: 2em;">
-    <h2>Restricted Area</h2>
-    <p>You must log in using your Google account to continue.</p>
-    <button onclick="signIn()">Login with Google</button>
+  <div id="login-section" style="display: none; text-align: center; padding-top: 100px;">
+  <h2>Please sign in with your Google account</h2>
+  <button onclick="signIn()">Sign in with Google</button>
   </div>
 
   <!-- ✅ Main Content (Only visible after login) -->
   <div id="main-content" style="display: none;">
-    <header style="display: flex; justify-content: space-between; align-items: center; padding: 1em;">
-      <h1>BMHHS Survey Dashboard</h1>
-      <button onclick="signOut()">Logout</button>
-    </header>
+  <h2>Welcome to the BMHHS Survey Site</h2>
+  <button onclick="signOut()">Sign out</button>
+  </div>
 
     <main style="padding: 1em;">
       <p>Welcome! You are successfully logged in.</p>
