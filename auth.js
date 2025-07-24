@@ -37,6 +37,28 @@ function protectPage(whitelist = []) {
       }
       mainContent.style.display = "block";
       loginSection.style.display = "none";
+      // === Inject buttons if not already present ===
+      if (!document.getElementById("edit-button")) {
+      const editBtn = document.createElement("a");
+      editBtn.href = "./edit/edit-form.html";
+      editBtn.id = "edit-button";
+      editBtn.className = "form-button";
+      editBtn.innerText = "Edit Data";
+
+      const addBtn = document.createElement("a");
+      addBtn.href = "./add/add-form.html";
+      addBtn.id = "add-button";
+      addBtn.className = "form-button";
+      addBtn.innerText = "Add Data";
+
+      const buttonContainer = document.createElement("div");
+      buttonContainer.className = "button-container";
+      buttonContainer.appendChild(editBtn);
+      buttonContainer.appendChild(addBtn);
+
+      mainContent.appendChild(buttonContainer);
+    }
+
     } else {
       mainContent.style.display = "none";
       loginSection.style.display = "block";
