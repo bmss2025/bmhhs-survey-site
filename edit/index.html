@@ -2,43 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Edit Survey Entry</title>
+  <title>Survey Records</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2>Edit Household Survey Entry</h2>
-
-  <form id="surveyForm">
-    <label>
-      Survey Location:
-      <input type="text" id="Survey_Location" name="Survey_Location" readonly />
-    </label><br/>
-
-    <label>
-      Location Name:
-      <input type="text" id="Location_Name" name="Location_Name" />
-    </label><br/>
-
-    <label>
-      Household Owner:
-      <input type="text" id="Name_of_Household_Owner" name="Name_of_Household_Owner" />
-    </label><br/>
-
-    <label>
-      Mobile No:
-      <input type="text" id="Mobile_No" name="Mobile_No" />
-    </label><br/>
-
-    <label>
-      Email ID:
-      <input type="email" id="Email_Id" name="Email_Id" />
-    </label><br/>
-
-    <button type="submit">Update</button>
-  </form>
+  <h2>Household Survey Records</h2>
+  <table id="dataTable" border="1">
+    <thead>
+      <tr>
+        <th>Survey Location</th>
+        <th>Location Name</th>
+        <th>Household Owner</th>
+        <th>Mobile No</th>
+        <th>Email ID</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rows will be inserted here -->
+    </tbody>
+  </table>
 
   <script src="form.js"></script>
 </body>
 </html>
-
