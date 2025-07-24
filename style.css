@@ -19,18 +19,5 @@ button {
   padding: 0.6em 1.2em;
 }
 
-<style>
-  #action-buttons {
-    display: flex;
-    margin-top: 20px;
-  }
-
-  #action-buttons button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-</style>
-
 
 
