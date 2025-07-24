@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Survey Data Editor</title>
+  <title>Survey Dashboard</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
 
-    #login-section, #form-section, #action-buttons {
+    #login-section, #welcome-section, #action-buttons {
       margin-bottom: 20px;
     }
 
@@ -33,39 +33,52 @@
       gap: 10px;
     }
 
-    #action-buttons button {
-      font-size: 16px;
+    #welcome-section {
+      display: none;
     }
+
+    .hidden {
+      display: none;
+    }
+
+    .flex {
+      display: flex;
+    }
+
   </style>
 </head>
 <body>
-  <h2>Survey Data Editor</h2>
+  <h2>Survey Dashboard</h2>
 
-  <!-- Login/Logout Section -->
+  <!-- Login Section -->
   <div id="login-section">
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
     <button onclick="loginUser()">Login</button>
+  </div>
+
+  <!-- Welcome + Buttons + Logout -->
+  <div id="welcome-section">
+    <p id="welcome-message">Welcome!</p>
+
+    <div id="action-buttons" class="flex">
+      <button onclick="window.location.href='/edit/edit-form.html'">Edit Data</button>
+      <button onclick="window.location.href='/new/add-form.html'">Add New</button>
+    </div>
+
     <button onclick="logoutUser()">Logout</button>
   </div>
 
-  <!-- Action Buttons (Edit / Add New) -->
-  <div id="action-buttons">
-    <button onclick="window.location.href='/edit/edit-form.html'">Edit Data</button>
-    <button onclick="window.location.href='/new/add-form.html'">Add New</button>
-  </div>
-
-  <!-- Your data form section here (optional or to be added later) -->
-  <div id="form-section">
-    <!-- Form display/edit can go here if needed -->
-  </div>
-
   <script>
-    function showButtonsAfterLogin() {
+    function showLoggedInUI() {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('welcome-section').style.display = 'block';
       document.getElementById('action-buttons').style.display = 'flex';
     }
 
-    function hideButtonsOnLogout() {
+    function showLoggedOutUI() {
+      document.getElementById('login-section').style.display = 'block';
+      document.getElementById('welcome-section').style.display = 'none';
       document.getElementById('action-buttons').style.display = 'none';
     }
 
@@ -73,26 +86,26 @@
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
-      // Simple example check — replace with real auth
+      // Simple demo logic — replace with real authentication
       if (username === 'admin' && password === 'password') {
         sessionStorage.setItem('loggedIn', 'true');
-        showButtonsAfterLogin();
-        alert('Login successful');
+        showLoggedInUI();
       } else {
-        alert('Invalid login');
+        alert('Invalid credentials');
       }
     }
 
     function logoutUser() {
       sessionStorage.removeItem('loggedIn');
-      hideButtonsOnLogout();
-      alert('Logged out');
+      showLoggedOutUI();
     }
 
     // On page load
     window.onload = function () {
       if (sessionStorage.getItem('loggedIn') === 'true') {
-        showButtonsAfterLogin();
+        showLoggedInUI();
+      } else {
+        showLoggedOutUI();
       }
     };
   </script>
