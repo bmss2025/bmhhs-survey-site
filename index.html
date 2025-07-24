@@ -2,39 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BMHHS Survey Site</title>
-  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 🔐 Login Section -->
+  <!-- Login Section (Shown if NOT logged in) -->
   <div id="login-section" style="display: none; text-align: center; padding-top: 100px;">
-  <h2>Please sign in with your Google account</h2>
-  <button onclick="signIn()">Sign in with Google</button>
+    <h2>Please sign in with your Google account</h2>
+    <button onclick="signIn()">Sign in with Google</button>
   </div>
 
-  <!-- ✅ Main Content (Only visible after login) -->
-  <div id="main-content" style="display: none;">
-  <h2>Welcome to the BMHHS Survey Site</h2>
-  <button onclick="signOut()">Sign out</button>
-    <main style="padding: 1em;">
-      <p>Welcome! You are successfully logged in.</p>
-      <!-- Add navigation or content here -->
-    </main>
+  <!-- Main Content Section (Shown only AFTER login) -->
+  <div id="main-content" style="display: none; text-align: center; padding-top: 100px;">
+    <h2>Welcome! You are successfully logged in.</h2>
+    <button onclick="signOut()">Sign out</button>
   </div>
 
-  <!-- 🔧 Firebase SDKs -->
+  <!-- Firebase & Auth Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth-compat.js"></script>
-
-
-  <!-- 🔄 Reusable Auth Logic (in root folder) -->
   <script src="auth.js"></script>
+
+  <!-- Start Auth Guard -->
   <script>
-    // Optional: you can pass a whitelist of allowed email addresses
-    protectPage([
-      // "your.email@gmail.com"
-    ]);
+    protectPage();
   </script>
 </body>
 </html>
