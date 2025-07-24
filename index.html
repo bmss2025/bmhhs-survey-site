@@ -17,6 +17,10 @@
     <h1>Welcome! You are successfully logged in.</h1>
     <button onclick="signOut()">Sign Out</button>
     <!-- Your protected content goes here -->
+    <div id="action-buttons" style="display: none; gap: 10px;">
+      <button onclick="window.location.href='/edit/edit-form.html'">Edit Data</button>
+      <button onclick="window.location.href='/new/add-form.html'">Add New</button>
+    </div>
   </div>
 
   <!-- Firebase SDKs (must come before auth.js) -->
