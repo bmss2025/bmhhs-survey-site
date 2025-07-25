@@ -46,7 +46,7 @@ function protectPage(whitelist = []) {
       editBtn.innerText = "Edit Data";
 
       const addBtn = document.createElement("a");
-      addBtn.href = "./add/add-form.html";
+      addBtn.href = "./add/consent.html";
       addBtn.id = "add-button";
       addBtn.className = "form-button";
       addBtn.innerText = "Add Data";
