@@ -1,33 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Edit Entry</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <h2>Edit Survey Entry</h2>
-  <form id="surveyForm">
-    <input type="hidden" id="rowIndex" />
-    <label>Survey Location:
-      <input type="text" id="Survey_Location" readonly />
-    </label><br/>
-    <label>Location Name:
-      <input type="text" id="Location_Name" />
-    </label><br/>
-    <label>Household Owner:
-      <input type="text" id="Name_of_Household_Owner" />
-    </label><br/>
-    <label>Mobile No:
-      <input type="text" id="Mobile_No" />
-    </label><br/>
-    <label>Email ID:
-      <input type="email" id="Email_Id" />
-    </label><br/>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background: #f0f0f0;
+      }
+      input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Editable Survey Data</h2>
+    <div id="table-container"></div>
 
-    <button type="submit">Update</button>
-  </form>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCK48gnZT2j9h5uwQ3SRk8qYPe0lmHs-jo",
+        authDomain: "bmhhs-survey-site.firebaseapp.com",
+        projectId: "bmhhs-survey-site",
+        appId: "1:177160691791:web:d7db"
+      };
+      firebase.initializeApp(firebaseConfig);
 
-  <script src="form.js"></script>
-</body>
+      firebase.auth().onAuthStateChanged(async (user) => {
+        if (user) {
+          const idToken = await user.getIdToken();
+          fetchFilteredData(idToken);
+        } else {
+          firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        }
+      });
+
+      const scriptURL = "https://script.google.com/macros/s/AKfycbwWPPT8X2eMZkZHUgnaiJnAjM9uIYcdMs-cFogm4hi_a2troFD_ykmVQI5P7pz-5GJS/exec";
+
+      function fetchFilteredData(token) {
+        fetch(scriptURL, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ action: 'getFilteredData' })
+        })
+        .then(res => res.json())
+        .then(data => renderTable(data, token))
+        .catch(err => console.error('Error loading data:', err));
+      }
+
+      function renderTable(data, token) {
+        const container = document.getElementById('table-container');
+        container.innerHTML = '';
+
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+
+        const headers = ["Survey_Location", "Location_Name", "Name_of_Household_Owner", "Mobile_No", "Email_Id", "Edit"];
+        const headerRow = document.createElement('tr');
+        headers.forEach(header => {
+          const th = document.createElement('th');
+          th.innerText = header;
+          headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+
+        data.forEach(row => {
+          const tr = document.createElement('tr');
+
+          const editableFields = ["Survey_Location", "Location_Name", "Name_of_Household_Owner", "Mobile_No", "Email_Id"];
+          editableFields.forEach(field => {
+            const td = document.createElement('td');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = row[field] || '';
+            input.dataset.field = field;
+            td.appendChild(input);
+            tr.appendChild(td);
+          });
+
+          const btnTd = document.createElement('td');
+          const btn = document.createElement('button');
+          btn.innerText = 'Save';
+          btn.onclick = () => {
+            const inputs = tr.querySelectorAll('input');
+            const updates = {};
+            inputs.forEach(inp => {
+              updates[inp.dataset.field] = inp.value;
+            });
+            updateRow(row._rowNumber, updates, token);
+          };
+          btnTd.appendChild(btn);
+          tr.appendChild(btnTd);
+
+          tbody.appendChild(tr);
+        });
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        container.appendChild(table);
+      }
+
+      function updateRow(rowNumber, updates, token) {
+        fetch(scriptURL, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'updateRow',
+            rowNumber,
+            updates
+          })
+        })
+        .then(res => res.json())
+        .then(res => {
+          alert("✅ Row updated successfully.");
+        })
+        .catch(err => alert("❌ Update failed."));
+      }
+    </script>
+  </body>
 </html>
