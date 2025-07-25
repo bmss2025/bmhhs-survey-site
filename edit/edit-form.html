@@ -3,8 +3,6 @@
   <head>
     <base target="_top">
     <meta charset="utf-8">
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <style>
       table {
         width: 100%;
@@ -27,43 +25,12 @@
   </head>
   <body>
     <h2>Editable Survey Data</h2>
-    <div id="table-container"></div>
+    <div id="table-container">Loading...</div>
 
     <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyCK48gnZT2j9h5uwQ3SRk8qYPe0lmHs-jo",
-        authDomain: "bmhhs-survey-site.firebaseapp.com",
-        projectId: "bmhhs-survey-site",
-        appId: "1:177160691791:web:d7db"
-      };
-      firebase.initializeApp(firebaseConfig);
+      google.script.run.withSuccessHandler(renderTable).getFilteredData();
 
-      firebase.auth().onAuthStateChanged(async (user) => {
-        if (user) {
-          const idToken = await user.getIdToken();
-          fetchFilteredData(idToken);
-        } else {
-          firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
-        }
-      });
-
-      const scriptURL = "https://script.google.com/macros/s/AKfycby_9aznPugClHil92sQd46-N2w_mq1nIUZKSg0MLFTQFtO_AKbCVlkrJuBWWsVMQBvv6g/exec";
-
-      function fetchFilteredData(token) {
-        fetch(scriptURL, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ action: 'getFilteredData' })
-        })
-        .then(res => res.json())
-        .then(data => renderTable(data, token))
-        .catch(err => console.error('Error loading data:', err));
-      }
-
-      function renderTable(data, token) {
+      function renderTable(data) {
         const container = document.getElementById('table-container');
         container.innerHTML = '';
 
@@ -103,7 +70,10 @@
             inputs.forEach(inp => {
               updates[inp.dataset.field] = inp.value;
             });
-            updateRow(row._rowNumber, updates, token);
+            google.script.run
+              .withSuccessHandler(() => alert("✅ Row updated successfully."))
+              .withFailureHandler(() => alert("❌ Update failed."))
+              .updateRow(row._rowNumber, updates);
           };
           btnTd.appendChild(btn);
           tr.appendChild(btnTd);
@@ -114,26 +84,6 @@
         table.appendChild(thead);
         table.appendChild(tbody);
         container.appendChild(table);
-      }
-
-      function updateRow(rowNumber, updates, token) {
-        fetch(scriptURL, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            action: 'updateRow',
-            rowNumber,
-            updates
-          })
-        })
-        .then(res => res.json())
-        .then(res => {
-          alert("✅ Row updated successfully.");
-        })
-        .catch(err => alert("❌ Update failed."));
       }
     </script>
   </body>
