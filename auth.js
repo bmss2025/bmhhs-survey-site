@@ -65,3 +65,24 @@ function protectPage(whitelist = []) {
     }
   });
 }
+
+// === Inactivity Auto-Logout (5 minutes) ===
+let inactivityTimer;
+const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes
+
+function startInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    alert("You have been logged out due to inactivity.");
+    firebase.auth().signOut();
+  }, INACTIVITY_LIMIT);
+}
+
+// Reset timer on any user activity
+['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+  document.addEventListener(event, startInactivityTimer);
+});
+
+// Start timer on page load
+window.addEventListener('load', startInactivityTimer);
+
