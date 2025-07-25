@@ -68,7 +68,7 @@ function protectPage(whitelist = []) {
 
 // === Inactivity Auto-Logout (5 minutes) ===
 let inactivityTimer;
-const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes
+const INACTIVITY_LIMIT = 5 * 60 * 1000;
 
 function startInactivityTimer() {
   clearTimeout(inactivityTimer);
@@ -78,11 +78,17 @@ function startInactivityTimer() {
   }, INACTIVITY_LIMIT);
 }
 
-// Reset timer on any user activity
-['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
-  document.addEventListener(event, startInactivityTimer);
+// Only set/reset timer when user is logged in
+auth.onAuthStateChanged(user => {
+  if (user) {
+    // Start timer initially
+    startInactivityTimer();
+
+    // Reset on any activity
+    ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+      document.addEventListener(event, startInactivityTimer);
+    });
+  } else {
+    clearTimeout(inactivityTimer);
+  }
 });
-
-// Start timer on page load
-window.addEventListener('load', startInactivityTimer);
-
